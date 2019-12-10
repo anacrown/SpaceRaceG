@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>-uri "http://localhost:8080/another-context/board/player/nais%40mail.ru%3fcode=13476795611535248716"</StartArguments>
+  </PropertyGroup>
+</Project>
