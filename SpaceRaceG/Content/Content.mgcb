@@ -73,6 +73,13 @@
 /processorParam:TextureFormat=Color
 /build:explosion.png
 
+#begin Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font.spritefont
+
 #begin gold.png
 /importer:TextureImporter
 /processor:TextureProcessor

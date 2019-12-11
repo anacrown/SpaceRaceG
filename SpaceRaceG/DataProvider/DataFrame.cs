@@ -8,9 +8,9 @@ namespace SpaceRaceG.DataProvider
 
         public string Board { get; }
 
-        public uint FrameNumber { get; }
+        public int FrameNumber { get; }
 
-        public DataFrame(DateTime time, string board, uint frameNumber)
+        public DataFrame(DateTime time, string board, int frameNumber)
         {
             Time = time;
             Board = board;

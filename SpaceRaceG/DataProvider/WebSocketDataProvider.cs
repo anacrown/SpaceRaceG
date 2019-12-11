@@ -31,7 +31,8 @@ namespace SpaceRaceG.DataProvider
 
         public void GetObjectData(SerializationInfo info, StreamingContext context) => info.AddValue("Settings", Settings);
 
-        public uint FrameNumber { get; private set; }
+        public int FrameCount => throw new NotImplementedException();
+        public int FrameNumber { get; private set; }
 
         public string Name => $"WEB [{Settings.IdentityUser?.UserName}]";
 
@@ -39,12 +40,12 @@ namespace SpaceRaceG.DataProvider
 
         public void Start()
         {
-            if (Settings.IdentityUser.IsEmty)
-            {
+            if (Settings.IdentityUser.IsEmty) 
                 return;
-            }
 
             FrameNumber = 0;
+            OnTimeChanged(FrameNumber);
+
             StartTime = DateTime.Now;
             //OnLogDataReceived($"Open {Settings.IdentityUser}");
             _webSocket = new WebSocket(Settings.IdentityUser.ToString());
@@ -86,6 +87,21 @@ namespace SpaceRaceG.DataProvider
             //OnLogDataReceived("Stopped");
         }
 
+        public void RecordPlay()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RecordStop()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MoveToFrame(int frameNumber)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SendResponse(string response)
         {
             _webSocket?.Send(response);
@@ -105,6 +121,7 @@ namespace SpaceRaceG.DataProvider
         public event EventHandler Started;
         public event EventHandler Stopped;
 
+        public event EventHandler<int> TimeChanged;
         public event EventHandler<DataFrame> DataReceived;
 
         private void WebSocketOnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -112,33 +129,18 @@ namespace SpaceRaceG.DataProvider
             DataReceived?.Invoke(this, new DataFrame(DateTime.Now, ProcessMessage(e.Message), FrameNumber));
 
             FrameNumber++;
+            OnTimeChanged(FrameNumber);
         }
 
         protected virtual void OnStarted() => Started?.Invoke(this, EventArgs.Empty);
 
         protected virtual void OnStopped() => Stopped?.Invoke(this, EventArgs.Empty);
 
-        protected bool Equals(WebSocketDataProvider other)
-        {
-            return Equals(Settings.IdentityUser, other.Settings.IdentityUser);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((WebSocketDataProvider)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return (Settings.IdentityUser != null ? Settings.IdentityUser.GetHashCode() : 0);
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        protected virtual void OnTimeChanged(int e) => TimeChanged?.Invoke(this, e);
     }
 }

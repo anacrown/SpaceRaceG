@@ -31,12 +31,11 @@ namespace SpaceRaceG.DataProvider
 
         public DateTime StartTime { get; private set; }
 
-        public uint FrameNumber { get; private set; }
+        public int FrameNumber { get; private set; }
         public int FrameCount => _boards?.Count ?? 0;
-        public int FrameMaximumKey => _boards?.Count - 1 ?? 0;
 
-        private Dictionary<uint, DataFrame> _boards;
-        private Dictionary<uint, string> _responses;
+        private Dictionary<int, DataFrame> _boards;
+        private Dictionary<int, string> _responses;
         private static readonly Regex Pattern = new Regex(@"^\[([\.\d\s]*)\]\s\((\d*)\):\s(.*)$");
         private readonly Timer _timer = new Timer(800);
         private string _name;
@@ -66,7 +65,7 @@ namespace SpaceRaceG.DataProvider
                 if (File.Exists(boardFile)) return boardFile;
 
                 var lastStartTime = Directory.GetDirectories(path)
-                    .Select(dir => DateTime.ParseExact(dir, Settings.DataFormat, CultureInfo.InvariantCulture))
+                    .Select(dir => DateTime.ParseExact(Path.GetFileName(dir), Settings.DataFormat, CultureInfo.InvariantCulture))
                     .Max();
 
                 boardFile = Path.Combine(path, lastStartTime.ToString(Settings.DataFormat), boardFileName);
@@ -112,7 +111,7 @@ namespace SpaceRaceG.DataProvider
 
             var time = DateTime.ParseExact(match.Groups[1].Value, Settings.DataFormat, CultureInfo.InvariantCulture);
 
-            return new DataFrame(time, match.Groups[3].Value, uint.TryParse(match.Groups[2].Value, out uint frameNumber) ? frameNumber : 0);
+            return new DataFrame(time, match.Groups[3].Value, int.TryParse(match.Groups[2].Value, out var frameNumber) ? frameNumber : 0);
         }
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
@@ -141,8 +140,7 @@ namespace SpaceRaceG.DataProvider
             MoveToFrame(0);
 
             OnPropertyChanged(nameof(FrameCount));
-            OnPropertyChanged(nameof(FrameMaximumKey));
-
+            
             OnStarted();
         }
 
@@ -157,7 +155,7 @@ namespace SpaceRaceG.DataProvider
 
         public void RecordStop() => _timer?.Stop();
 
-        public void MoveToFrame(uint frameNumber)
+        public void MoveToFrame(int frameNumber)
         {
             FrameNumber = frameNumber;
             OnTimeChanged(FrameNumber);
@@ -175,7 +173,7 @@ namespace SpaceRaceG.DataProvider
             //throw new NotImplementedException();
         }
 
-        public event EventHandler<uint> TimeChanged;
+        public event EventHandler<int> TimeChanged;
 
         public event EventHandler<DataFrame> DataReceived;
         protected virtual void OnDataReceived(DataFrame frame) => DataReceived?.Invoke(this, frame);
@@ -189,7 +187,7 @@ namespace SpaceRaceG.DataProvider
         //Никогда не останавливается? ...
         protected virtual void OnStopped() => Stopped?.Invoke(this, EventArgs.Empty);
 
-        protected virtual void OnTimeChanged(uint e) => TimeChanged?.Invoke(this, e);
+        protected virtual void OnTimeChanged(int e) => TimeChanged?.Invoke(this, e);
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -10,6 +10,7 @@
         SizeToContent="WidthAndHeight" ResizeMode="CanMinimize">
     <StackPanel Orientation="Vertical">
         <ContentControl x:Name="GameControl"/>
-        <Slider x:Name="Slider"/>
+        <Slider x:Name="Slider" Visibility="Collapsed" ValueChanged="Slider_OnValueChanged"
+                TickFrequency="1" IsSnapToTickEnabled="True"/>
     </StackPanel>
 </Window>

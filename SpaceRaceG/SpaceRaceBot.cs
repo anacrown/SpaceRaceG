@@ -27,8 +27,6 @@ namespace SpaceRaceG
             
             DataProvider.DataReceived += DataProviderOnDataReceived;
             DataLogger = new FileSystemDataLogger(new FileSystemDataLoggerSettings());
-
-            DataProvider.Start();
         }
 
         private void DataProviderOnDataReceived(object sender, DataFrame frame)
@@ -37,5 +35,7 @@ namespace SpaceRaceG
 
             DataProvider.SendResponse("");
         }
+
+        public void Start() => DataProvider?.Start();
     }
 }

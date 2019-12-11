@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,10 +14,12 @@ namespace SpaceRaceG
         SpriteBatch _spriteBatch;
         private WpfGraphicsDeviceService _graphicsDeviceManager;
 
-        private string _board;
+        private SpriteFont _font;
         private readonly Dictionary<Element, Texture2D> _textures;
 
-        private int w, h, size;
+        private DataFrame _frame;
+        private int _blockWidth, _blockHeight, _boardSize;
+        private Vector2 _frameNumberPosition;
 
         public SpaceRaceGame(SpaceRaceBot bot)
         {
@@ -28,14 +31,15 @@ namespace SpaceRaceG
 
         private void DataProviderOnDataReceived(DataFrame e)
         {
-            _board = e.Board;
+            _frame = e;
 
-            if (size == 0)
-            {
-                size = (int)Math.Sqrt(_board.Length);
-                w = _textures[Element.NONE].Width;
-                h = _textures[Element.NONE].Width;
-            }
+            if (_boardSize != 0) return;
+
+            _boardSize = (int)Math.Sqrt(e.Board.Length);
+            _blockWidth = _textures.First().Value.Width;
+            _blockHeight = _textures.First().Value.Height;
+
+            _frameNumberPosition = new Vector2(_blockWidth + 1, _blockHeight * 0.5f);
         }
 
         protected override void Initialize()
@@ -55,40 +59,39 @@ namespace SpaceRaceG
             _textures.Add(Element.BULLET_PACK, Content.Load<Texture2D>("bullet_pack"));
             _textures.Add(Element.BULLET, Content.Load<Texture2D>("bullet"));
 
+            _font = Content.Load<SpriteFont>("Font");
+
             base.Initialize();
-        }
-
-        protected override void Update(GameTime time)
-        {
-
         }
 
         protected override void Draw(GameTime time)
         {
             GraphicsDevice.Clear(Color.AliceBlue);
 
-            if (string.IsNullOrEmpty(_board)) return;
+            if (string.IsNullOrEmpty(_frame.Board)) return;
 
             if (double.IsNaN(Width))
             {
-                Width = w * size;
-                Height = h * size;
+                Width = _blockWidth * _boardSize;
+                Height = _blockHeight * _boardSize;
             }
 
             _spriteBatch.Begin();
 
-            for (var i = 0; i < _board.Length; i++)
+            for (var i = 0; i < _frame.Board.Length; i++)
             {
-                var c = _board[i];
+                var c = _frame.Board[i];
                 var e = SpaceRaceSolver.GetElement(c);
 
-                var x = i % size;
-                var y = i / size;
+                var x = i % _boardSize;
+                var y = i / _boardSize;
 
-                var rectangle = new Rectangle(x * w, y * h, w, h);
+                var rectangle = new Rectangle(x * _blockWidth, y * _blockHeight, _blockWidth, _blockHeight);
 
                 _spriteBatch.Draw(_textures[e], rectangle, Color.White);
             }
+
+            _spriteBatch.DrawString(_font, _frame.FrameNumber.ToString(), _frameNumberPosition, Color.Black);
 
             _spriteBatch.End();
         }
