@@ -167,7 +167,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AI\Cell.cs" />
+    <Compile Include="AI\Direction.cs" />
+    <Compile Include="AI\Point.cs" />
+    <Compile Include="AI\Size.cs" />
     <Compile Include="AppData.cs" />
+    <Compile Include="AI\Board.cs" />
     <Compile Include="DataProvider\DataFrame.cs" />
     <Compile Include="DataProvider\FileSystemConfigurator.cs" />
     <Compile Include="DataProvider\FileSystemDataLogger.cs" />
@@ -182,7 +187,7 @@
     <Compile Include="SpaceRaceBot.cs" />
     <Compile Include="SpaceRaceBotSettings.cs" />
     <Compile Include="SpaceRaceGame.cs" />
-    <Compile Include="SpaceRaceSolver.cs" />
+    <Compile Include="AI\SpaceRaceSolver.cs" />
     <Compile Include="DataProvider\WebSocketDataProvider.cs" />
     <Compile Include="DataProvider\WebSocketDataProviderSettings.cs" />
     <Page Include="MainWindow.xaml">

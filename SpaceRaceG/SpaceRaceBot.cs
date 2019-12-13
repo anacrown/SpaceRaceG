@@ -1,4 +1,5 @@
 ﻿using System;
+using SpaceRaceG.AI;
 using SpaceRaceG.DataProvider;
 
 namespace SpaceRaceG
@@ -6,12 +7,22 @@ namespace SpaceRaceG
     public class SpaceRaceBot
     {
         public SpaceRaceBotSettings Settings { get; }
-        public IDataProvider DataProvider { get; }
-        public IDataLogger DataLogger { get; }
+        private IDataProvider DataProvider { get; }
+        private IDataLogger DataLogger { get; }
+        private SpaceRaceSolver Solver { get; }
+
+        public int FrameNumber => DataProvider.FrameNumber;
+
+        public event EventHandler<Board> BoardLoaded;
+        public event EventHandler<IDataProvider> DataProviderStarted;
+        public event EventHandler<IDataProvider> DataProviderStopped;
+        public event EventHandler<int> DataProviderTimeChanged;
 
         public SpaceRaceBot(SpaceRaceBotSettings settings)
         {
             Settings = settings;
+
+            Solver = new SpaceRaceSolver();
 
             switch (Settings.DataSource)
             {
@@ -24,8 +35,11 @@ namespace SpaceRaceG
                 default: throw new ArgumentOutOfRangeException();
             }
 
-            
             DataProvider.DataReceived += DataProviderOnDataReceived;
+            DataProvider.Started += (sender, args) => DataProviderStarted?.Invoke(this, (IDataProvider)sender);
+            DataProvider.Stopped += (sender, args) => DataProviderStopped?.Invoke(this, (IDataProvider)sender);
+            DataProvider.TimeChanged += (sender, i) => DataProviderTimeChanged?.Invoke(this, i);
+
             DataLogger = new FileSystemDataLogger(new FileSystemDataLoggerSettings());
         }
 
@@ -33,9 +47,21 @@ namespace SpaceRaceG
         {
             DataLogger.Log(DataProvider.Name, DataProvider.StartTime, frame);
 
+            Board.Next(frame);
+            BoardLoaded?.BeginInvoke(this, Board.Current, ar => {}, null);
+
+            if (Solver.Answer(out var response))
+            {
+                DataLogger.Log(DataProvider.Name, DataProvider.StartTime, DateTime.Now, frame.FrameNumber, response);
+                DataProvider.SendResponse(response);
+
+                return;
+            }
+
             DataProvider.SendResponse("");
         }
 
         public void Start() => DataProvider?.Start();
+        public void MoveToFrame(int frameNumber) => DataProvider.MoveToFrame(frameNumber);
     }
 }

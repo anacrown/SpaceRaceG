@@ -9,7 +9,7 @@ namespace SpaceRaceG.DataProvider
 
         void Log(string name, DateTime startTime, DataFrame frame);
 
-        void Log(string name, DateTime startTime, DateTime time, uint frameNumber, string response);
+        void Log(string name, DateTime startTime, DateTime time, int frameNumber, string response);
 
         void LogDead(string name, DateTime startTime, DataFrame frame);
     }

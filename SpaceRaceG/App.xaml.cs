@@ -35,6 +35,3 @@ namespace SpaceRaceG
         }
     }
 }
-
-//-file "C:\Users\misho\source\repos\SpaceRaceG\SpaceRaceG\App_Data\Logs\WEB [nais@mail.ru]"\
-//-uri "http://localhost:8080/another-context/board/player/nais@mail.ru?code=13476795611535248716"

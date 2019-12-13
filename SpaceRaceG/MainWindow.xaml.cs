@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using SpaceRaceG.AI;
 using SpaceRaceG.DataProvider;
 
 namespace SpaceRaceG
@@ -18,26 +19,16 @@ namespace SpaceRaceG
             if (bot.Settings.DataSource != DataSource.FILE) return;
 
             Slider.Visibility = Visibility.Visible;
-            bot.DataProvider.Started += DataProviderOnStarted;
-            bot.DataProvider.TimeChanged += DataProviderOnTimeChanged;
+            bot.DataProviderTimeChanged += (sender, i) => Slider.Value = i;
+            bot.DataProviderStarted += (sender, provider) => Slider.Maximum = provider.FrameCount - 1;
         }
-
-        private void DataProviderOnStarted(object sender, EventArgs e)
-        {
-            Slider.Maximum = _bot.DataProvider.FrameCount - 1;
-        }
-
-        private void DataProviderOnTimeChanged(object sender, int e)
-        {
-            Slider.Value = e;
-        }
-
+        
         private void Slider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var frameNumber = (int)e.NewValue;
 
-            if (_bot.DataProvider.FrameNumber != frameNumber)
-                _bot.DataProvider.MoveToFrame(frameNumber);
+            if (_bot.FrameNumber != frameNumber)
+                _bot.MoveToFrame(frameNumber);
         }
     }
 }

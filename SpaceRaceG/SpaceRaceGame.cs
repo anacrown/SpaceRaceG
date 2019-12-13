@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Framework.WpfInterop;
+using SpaceRaceG.AI;
 using SpaceRaceG.DataProvider;
 
 namespace SpaceRaceG
@@ -17,8 +18,8 @@ namespace SpaceRaceG
         private SpriteFont _font;
         private readonly Dictionary<Element, Texture2D> _textures;
 
-        private DataFrame _frame;
-        private int _blockWidth, _blockHeight, _boardSize;
+        private Board _board;
+        private int _blockWidth, _blockHeight;
         private Vector2 _frameNumberPosition;
 
         public SpaceRaceGame(SpaceRaceBot bot)
@@ -26,20 +27,8 @@ namespace SpaceRaceG
             _textures = new Dictionary<Element, Texture2D>();
             Content = new ContentManager(Services) { RootDirectory = "Content" };
 
-            bot.DataProvider.DataReceived += (sender, frame) => Dispatcher?.Invoke(() => DataProviderOnDataReceived(frame));
-        }
-
-        private void DataProviderOnDataReceived(DataFrame e)
-        {
-            _frame = e;
-
-            if (_boardSize != 0) return;
-
-            _boardSize = (int)Math.Sqrt(e.Board.Length);
-            _blockWidth = _textures.First().Value.Width;
-            _blockHeight = _textures.First().Value.Height;
-
-            _frameNumberPosition = new Vector2(_blockWidth + 1, _blockHeight * 0.5f);
+            //TODO: lock!?
+            bot.BoardLoaded += (sender, board) => _board = board;
         }
 
         protected override void Initialize()
@@ -61,6 +50,11 @@ namespace SpaceRaceG
 
             _font = Content.Load<SpriteFont>("Font");
 
+            _blockWidth = _textures.First().Value.Width;
+            _blockHeight = _textures.First().Value.Height;
+
+            _frameNumberPosition = new Vector2(_blockWidth + 1, _blockHeight * 0.5f);
+
             base.Initialize();
         }
 
@@ -68,30 +62,22 @@ namespace SpaceRaceG
         {
             GraphicsDevice.Clear(Color.AliceBlue);
 
-            if (string.IsNullOrEmpty(_frame.Board)) return;
+            if (_board == null) return;
 
             if (double.IsNaN(Width))
             {
-                Width = _blockWidth * _boardSize;
-                Height = _blockHeight * _boardSize;
+                Width = _blockWidth * _board.Size;
+                Height = _blockHeight * _board.Size;
             }
 
             _spriteBatch.Begin();
 
-            for (var i = 0; i < _frame.Board.Length; i++)
-            {
-                var c = _frame.Board[i];
-                var e = SpaceRaceSolver.GetElement(c);
+            foreach (var cell in _board)
+                _spriteBatch.Draw(_textures[cell.Element],
+                    new Rectangle(cell.P.X * _blockWidth, cell.P.Y * _blockHeight, _blockWidth, _blockHeight),
+                    Color.White);
 
-                var x = i % _boardSize;
-                var y = i / _boardSize;
-
-                var rectangle = new Rectangle(x * _blockWidth, y * _blockHeight, _blockWidth, _blockHeight);
-
-                _spriteBatch.Draw(_textures[e], rectangle, Color.White);
-            }
-
-            _spriteBatch.DrawString(_font, _frame.FrameNumber.ToString(), _frameNumberPosition, Color.Black);
+            _spriteBatch.DrawString(_font, _board.Frame.FrameNumber.ToString(), _frameNumberPosition, Color.Black);
 
             _spriteBatch.End();
         }

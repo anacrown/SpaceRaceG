@@ -33,7 +33,7 @@ namespace SpaceRaceG.DataProvider
             var str = Path.Combine(Settings.MainLogDir, battleBotInstanceName);
             if (!Directory.Exists(str))
                 Directory.CreateDirectory(str);
-            var path = Path.Combine(str, starTime.ToString("yyyy.MM.dd hh.mm.ss"));
+            var path = Path.Combine(str, starTime.ToString(Settings.DataFormat));
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
             return path;
@@ -64,7 +64,7 @@ namespace SpaceRaceG.DataProvider
             }
         }
 
-        public void Log(string name, DateTime startTime, DateTime time, uint frameNumber, string response)
+        public void Log(string name, DateTime startTime, DateTime time, int frameNumber, string response)
         {
             var battleBotInstance = GetLogDirForBattleBotInstance(startTime, name);
             Path.Combine(battleBotInstance, "Board.txt");
