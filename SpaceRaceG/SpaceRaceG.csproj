@@ -169,6 +169,11 @@
     </ApplicationDefinition>
     <Compile Include="AI\Cell.cs" />
     <Compile Include="AI\Direction.cs" />
+    <Compile Include="AI\DirectionExtension.cs" />
+    <Compile Include="AI\EnumerableExtension.cs" />
+    <Compile Include="AI\Map2.cs" />
+    <Compile Include="AI\MapEntry.cs" />
+    <Compile Include="AI\Matrix.cs" />
     <Compile Include="AI\Point.cs" />
     <Compile Include="AI\Size.cs" />
     <Compile Include="AppData.cs" />
@@ -184,10 +189,11 @@
     <Compile Include="DataProvider\IDataProvider.cs" />
     <Compile Include="DataProvider\IdentityUser.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="AI\SolverCommand.cs" />
     <Compile Include="SpaceRaceBot.cs" />
     <Compile Include="SpaceRaceBotSettings.cs" />
     <Compile Include="SpaceRaceGame.cs" />
-    <Compile Include="AI\SpaceRaceSolver.cs" />
+    <Compile Include="SpaceRaceSolver.cs" />
     <Compile Include="DataProvider\WebSocketDataProvider.cs" />
     <Compile Include="DataProvider\WebSocketDataProviderSettings.cs" />
     <Page Include="MainWindow.xaml">

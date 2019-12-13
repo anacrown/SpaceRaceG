@@ -47,10 +47,10 @@ namespace SpaceRaceG
         {
             DataLogger.Log(DataProvider.Name, DataProvider.StartTime, frame);
 
-            Board.Next(frame);
-            BoardLoaded?.BeginInvoke(this, Board.Current, ar => {}, null);
+            var board = Board.Next(frame);
+            BoardLoaded?.BeginInvoke(this, board, ar => {}, null);
 
-            if (Solver.Answer(out var response))
+            if (Solver.Answer(board, out var response))
             {
                 DataLogger.Log(DataProvider.Name, DataProvider.StartTime, DateTime.Now, frame.FrameNumber, response);
                 DataProvider.SendResponse(response);

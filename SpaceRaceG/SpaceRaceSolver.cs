@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
+using SpaceRaceG.AI;
 
 //-file "C:\Users\misho\source\repos\SpaceRaceG\SpaceRaceG\App_Data\Logs\WEB [nais@mail.ru]"\
 //-uri "http://92.124.142.118:8080/another-context/board/player/nais@mail.ru?code=13476795611535248716"
 
-namespace SpaceRaceG.AI
+namespace SpaceRaceG
 {
     public class SpaceRaceSolver
     {
@@ -26,11 +28,31 @@ namespace SpaceRaceG.AI
             }
         }
 
-        public bool Answer(out string response)
+        public bool Answer(Board board, out string response)
         {
-            response = "UP";
+            response = string.Empty;
 
-            return true;
+            var pack = board.SingleOrDefault(c => c.Element == Element.BULLET_PACK);
+            var player = board.SingleOrDefault(c => c.Element == Element.HERO);
+
+            if (player != null && pack != null)
+            {
+                var bulletPackMap = new Map2(board).Check(player.P);
+                var path = bulletPackMap.Tracert(pack.P);
+
+                if (path.Length > 1)
+                {
+                    var next = path.Skip(1).First();
+                    var direction = player.P.GetDirectionTo(next);
+
+                    var command = direction.GetCommand();
+
+                    response = command.ToString();
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

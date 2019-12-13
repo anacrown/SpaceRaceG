@@ -5,14 +5,12 @@
         public Point P { get; private set; }
         public Element Element { get; private set; }
 
-        public Cell(Point p, Element element)
-        {
-            P = p;
-            Element = element;
-        }
-        public void Reset(Element element)
+        public Cell() { }
+        public Cell(Element element, Point p) => Reset(element, p);
+        public void Reset(Element element, Point p = null)
         {
             Element = element;
+            if (p != null) P = p;
         }
     }
 }

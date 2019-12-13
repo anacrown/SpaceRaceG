@@ -1,4 +1,6 @@
-﻿namespace SpaceRaceG.AI
+﻿using System.Windows.Input;
+
+namespace SpaceRaceG.AI
 {
     public class Size
     {
@@ -7,7 +9,8 @@
             Width = width;
             Height = height;
         }
-
+        public Size(int size) : this(size, size) { }
+        
         public int Width { get; }
         public int Height { get; }
     }

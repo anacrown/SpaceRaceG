@@ -66,8 +66,8 @@ namespace SpaceRaceG
 
             if (double.IsNaN(Width))
             {
-                Width = _blockWidth * _board.Size;
-                Height = _blockHeight * _board.Size;
+                Width = _blockWidth * _board.Size.Width;
+                Height = _blockHeight * _board.Size.Height;
             }
 
             _spriteBatch.Begin();
