@@ -30,6 +30,15 @@ namespace SpaceRaceG.AI
             }).Where(p => p.v.OnBoard(size)).Select(p => p.v);
         }
 
+        public IEnumerable<Point> GetNeighbors(Size size)
+        {
+            return Neighbors.Values.Select(dp => new
+            {
+                dp = dp,
+                v = this + dp
+            }).Where(p => p.v.OnBoard(size)).Select(p => p.v);
+        }
+
         public Direction GetDirectionTo(Point p)
         {
             var dP = p - this;

@@ -25,7 +25,10 @@ namespace SpaceRaceG.AI
         protected Board(DataFrame frame) : base(new Size((int)Math.Sqrt(frame.Board.Length)))
         {
             for (var i = 0; i < Cells.Length; i++)
+            {
+                Cells[i].Board = this;
                 Cells[i].Reset(SpaceRaceSolver.GetElement(frame.Board[i]), new Point(i % Size.Width, i / Size.Width));
+            }
         }
         private Board Reset(DataFrame frame)
         {
