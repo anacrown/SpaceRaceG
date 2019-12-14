@@ -16,7 +16,7 @@ namespace SpaceRaceG
                 case ' ': return Element.NONE;
                 case 'x': return Element.EXPLOSION;
                 case '☼': return Element.WALL;
-                case '☺': return Element.HERO;
+                case 'A': return Element.HERO;
                 case '☻': return Element.OTHER_HERO;
                 case '+': return Element.DEAD_HERO;
                 case '$': return Element.GOLD;
@@ -32,25 +32,25 @@ namespace SpaceRaceG
         {
             response = string.Empty;
 
-            var pack = board.SingleOrDefault(c => c.Element == Element.BULLET_PACK);
-            var player = board.SingleOrDefault(c => c.Element == Element.HERO);
-
-            if (player != null && pack != null)
-            {
-                var bulletPackMap = new Map2(board).Check(player.P);
-                var path = bulletPackMap.Tracert(pack.P);
-
-                if (path.Length > 1)
-                {
-                    var next = path.Skip(1).First();
-                    var direction = player.P.GetDirectionTo(next);
-
-                    var command = direction.GetCommand();
-
-                    response = command.ToString();
-                    return true;
-                }
-            }
+            //var pack = board.SingleOrDefault(c => c.Element == Element.BULLET_PACK);
+            // var player = board.SingleOrDefault(c => c.Element == Element.HERO);
+            //
+            // if (player != null && pack != null)
+            // {
+            //     var bulletPackMap = new Map2(board).Check(player.P);
+            //     var path = bulletPackMap.Tracert(pack.P);
+            //
+            //     if (path.Length > 1)
+            //     {
+            //         var next = path.Skip(1).First();
+            //         var direction = player.P.GetDirectionTo(next);
+            //
+            //         var command = direction.GetCommand();
+            //
+            //         response = command.ToString();
+            //         return true;
+            //     }
+            // }
 
             return false;
         }

@@ -1,0 +1,31 @@
+ Том в устройстве D имеет метку Games
+ Серийный номер тома: ACF5-0591
+
+ Содержимое папки D:\HACKATHON\SpaceRaceG\SpaceRaceG\Content
+
+14.12.2019  10:12    <DIR>          .
+14.12.2019  10:12    <DIR>          ..
+14.12.2019  10:06             7 158 bomb.png
+14.12.2019  10:06             4 185 bullet.png
+14.12.2019  10:06             1 110 bullet_pack.png
+14.12.2019  10:11             7 713 Content.mgcb
+14.12.2019  10:06             9 533 dead_hero.png
+14.12.2019  10:06            11 823 explosion.png
+14.12.2019  10:10             2 064 Font.spritefont
+14.12.2019  10:06             1 109 gold.png
+14.12.2019  10:06             1 192 hero.png
+14.12.2019  10:06             1 246 hero_down.png
+14.12.2019  10:06             1 082 hero_down_left.png
+14.12.2019  10:06             1 095 hero_down_right.png
+14.12.2019  10:06             1 199 hero_left.png
+14.12.2019  10:06             1 204 hero_right.png
+14.12.2019  10:06             1 192 hero_up.png
+14.12.2019  10:06             1 086 hero_up_left.png
+14.12.2019  10:06             1 080 hero_up_right.png
+14.12.2019  10:06             1 321 none.png
+14.12.2019  10:06             6 099 other_hero.png
+14.12.2019  10:12                 0 sprites.txt
+14.12.2019  10:06             7 112 stone.png
+14.12.2019  10:06               223 wall.png
+              22 файлов         69 826 байт
+               2 папок  936 926 453 760 байт свободно
