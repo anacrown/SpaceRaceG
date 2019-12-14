@@ -13,6 +13,9 @@ namespace SpaceRaceG.AI
 
         public Point[] AttentionPoints { get; set; }
         public Point[] PathPoints { get; set; }
+        public string Responce { get; set; }
+        public Map2 Map { get; set; }
+        public Point Target { get; set; }
 
         public DataFrame Frame { get; private set; }
 

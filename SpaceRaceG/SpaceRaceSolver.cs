@@ -49,25 +49,34 @@ namespace SpaceRaceG
 
             if (player != null)
             {
-                var packs = board.Where(c => c.Element == Element.BULLET_PACK).ToArray();
-                var paths_to_pack = packs.Select(c =>
+                // var packs = board.Where(c => c.Element == Element.BULLET_PACK).ToArray();
+                // var paths_to_pack = packs.Select(c =>
+                // {
+                //     //TODO: CheckedPoints - опасные клетки
+                //     var map = new Map2(board, board.AttentionPoints);
+                //     map.Check(player.P);
+                //     return (path: map.Tracert(c.P), target: c);
+                // }).ToArray();
+
+                var pack = board.FirstOrDefault(c => c.Element == Element.BULLET_PACK);
+                if (pack != null)
                 {
-                    //TODO: CheckedPoints - опасные клетки
+
                     var map = new Map2(board, board.AttentionPoints);
-                    map.Check(c.P);
-                    return (path: map.Tracert(player.P), target: c);
-                }).ToArray();
+                    map.Check(player.P);
+                    var path_short = (path: map.Tracert(pack.P), target: pack);
 
-                var path_short = paths_to_pack.MinSingle(p => p.path.Length);
+                    board.Map = map;
 
-                board.PathPoints = path_short.path;
+                    board.PathPoints = path_short.path;
 
-                var next = (path_short.path.Length >= 2) ? path_short.path.Skip(1).First() : path_short.target.P;
-                var direction = player.P.GetDirectionTo(next);
-                var command = direction.GetCommand();
+                    var next = (path_short.path.Length >= 1) ? path_short.path.First() : path_short.target.P;
+                    var direction = player.P.GetDirectionTo(next);
+                    var command = direction.GetCommand();
 
-                response = command.ToString();
-                return true;
+                    board.Responce = response = command.ToString();
+                    return true;
+                }
             }
 
             return false;
@@ -75,13 +84,15 @@ namespace SpaceRaceG
 
         private bool IsHero(Element element)
         {
-            return element == Element.HERO ||
-                   element == Element.HERO_up ||
-                   element == Element.HERO_down ||
+            return element == Element.HERO || 
+                   element == Element.HERO_down || 
                    element == Element.HERO_down_left ||
-                   element == Element.HERO_down_right ||
-                   element == Element.HERO_right ||
-                   element == Element.HERO_left;
+                   element == Element.HERO_down_right || 
+                   element == Element.HERO_left || 
+                   element == Element.HERO_right || 
+                   element == Element.HERO_up ||
+                   element == Element.HERO_up_left || 
+                   element == Element.HERO_up_right;
         }
 
         private IEnumerable<Point> _getAttentionPoints(Board board)
@@ -100,6 +111,12 @@ namespace SpaceRaceG
                     foreach (var neighbor in cell.P.GetNeighbors(board.Size))
                         yield return neighbor[Direction.Down];
                 }
+
+                if (cell.Element == Element.WALL)
+                    yield return cell.P;
+
+                if (cell.Element == Element.OTHER_HERO)
+                    yield return cell.P;
             }
 
             yield break;

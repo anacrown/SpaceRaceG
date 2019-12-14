@@ -50,7 +50,7 @@ namespace SpaceRaceG.AI
         private IEnumerable<Point> check(Point point)
         {
             this[point].BChecked = true;
-            var array = point.GetCrossVicinity(Size).Where(n => !this[n].BChecked && !this[n].BWatched).ToArray();
+            var array = point.GetNeighbors(Size).Where(n => !this[n].BChecked && !this[n].BWatched).ToArray();
 
             foreach (var index in array)
             {
@@ -74,7 +74,7 @@ namespace SpaceRaceG.AI
                 if (iAntiCycle < 0) yield break;
 
                 yield return entry.Position;
-                var array = entry.Position.GetCrossVicinity(Size).Select(p => this[p]).Where(e => e.Weight != -1 && e.Weight < entry.Weight).ToArray();
+                var array = entry.Position.GetNeighbors(Size).Select(p => this[p]).Where(e => e.Weight != -1 && e.Weight < entry.Weight).ToArray();
                 if (!array.Any()) yield break;
 
                 entry = array.MinSingle(e => e.Weight);

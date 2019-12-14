@@ -103,19 +103,30 @@ namespace SpaceRaceG
             _spriteBatch.Begin();
 
             foreach (var cell in _board)
+            {
                 _spriteBatch.Draw(_textures[cell.Element],
                     new Rectangle(cell.P.X * _blockWidth, cell.P.Y * _blockHeight, _blockWidth, _blockHeight),
                     Color.White);
+            }
 
             _spriteBatch.DrawString(_font, _board.Frame.FrameNumber.ToString(), _frameNumberPosition, Color.Black);
 
             if (_board.AttentionPoints != null)
-            foreach (var attentionPoint in _board.AttentionPoints)
+                foreach (var attentionPoint in _board.AttentionPoints)
                     _spriteBatch.DrawString(_font, "A", new Vector2(attentionPoint.X * _blockWidth, attentionPoint.Y * _blockHeight), Color.Red);
 
             if (_board.PathPoints != null)
                 foreach (var attentionPoint in _board.PathPoints)
                     _spriteBatch.DrawString(_font, "P", new Vector2(attentionPoint.X * _blockWidth + 3, attentionPoint.Y * _blockHeight), Color.Green);
+
+            if (!string.IsNullOrEmpty(_board.Responce))
+                _spriteBatch.DrawString(_font, _board.Responce, new Vector2(2 * _blockWidth + 1, _blockHeight * 0.5f), Color.Blue);
+
+            // if (_board.Map != null)
+            //     foreach (var mapEntry in _board.Map)
+            //         _spriteBatch.DrawString(_font, mapEntry.Weight.ToString(),
+            //             new Vector2(mapEntry.Position.X * _blockWidth + 6, mapEntry.Position.Y * _blockHeight),
+            //             Color.Yellow);
 
             _spriteBatch.End();
         }
