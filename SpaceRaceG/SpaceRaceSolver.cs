@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpaceRaceG.AI;
 
-//-uri ye"http://192.168.1.150:8080/codenjoy-contest/board/plar/demo6@codenjoy.com?code=7881037345545140492&gameName=codingbattle2019"
+//-uri "http://192.168.1.150:8080/codenjoy-contest/board/plar/demo6@codenjoy.com?code=7881037345545140492&gameName=codingbattle2019"
 //-file "D:\HACKATHON\SpaceRaceG\SpaceRaceG\App_Data\Logs\WEB [demo6@codenjoy.com]"
 
 namespace SpaceRaceG
@@ -58,28 +58,42 @@ namespace SpaceRaceG
                 //     return (path: map.Tracert(c.P), target: c);
                 // }).ToArray();
 
-                var pack = board.FirstOrDefault(c => c.Element == Element.BULLET_PACK);
-                if (pack != null)
+                var packs = board.Where(c => c.Element == Element.BULLET_PACK);
+                var paths_to_pack = packs.Select(c =>
                 {
-
+                    //TODO: CheckedPoints - опасные клетки
                     var map = new Map2(board, board.AttentionPoints);
                     map.Check(player.P);
-                    var path_short = (path: map.Tracert(pack.P), target: pack);
+                    return (path: map.Tracert(c.P), target: c);
+                }).Where(p => p.path.Length > 0).ToArray();
 
-                    board.Map = map;
-
+                if (paths_to_pack.Any())
+                {
+                    var path_short = paths_to_pack.MinSingle(p => p.path.Length);
                     board.PathPoints = path_short.path;
 
                     var next = (path_short.path.Length >= 1) ? path_short.path.First() : path_short.target.P;
                     var direction = player.P.GetDirectionTo(next);
                     var command = direction.GetCommand();
 
-                    board.Responce = response = command.ToString();
+                    response = command.ToString();
+
+                    if (player.P.GetLine(Direction.Up, board.Size, board.Size.Height)
+                            .Select(p => board[p])
+                            .FirstOrDefault(c =>
+                                c.Element == Element.BOMB || 
+                                c.Element == Element.OTHER_HERO ||
+                                c.Element == Element.STONE) != null)
+                        response += ",act";
+
+
+
+                    board.Responce = response;
                     return true;
                 }
             }
 
-            return false;
+            return true;
         }
 
         private bool IsHero(Element element)
@@ -99,8 +113,14 @@ namespace SpaceRaceG
         {
             foreach (var cell in board)
             {
+                if (cell.P.Y == 0)
+                    yield return cell.P;
+
                 if (cell.Element == Element.BULLET)
+                {
+                    yield return cell.P;
                     yield return cell.P[Direction.Up];
+                }
 
                 if (cell.Element == Element.STONE)
                     yield return cell.P[Direction.Down];
@@ -116,7 +136,10 @@ namespace SpaceRaceG
                     yield return cell.P;
 
                 if (cell.Element == Element.OTHER_HERO)
+                { 
                     yield return cell.P;
+                    yield return cell.P[Direction.Up];
+                }
             }
 
             yield break;

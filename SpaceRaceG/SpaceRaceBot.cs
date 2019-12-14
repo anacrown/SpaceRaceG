@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using SpaceRaceG.AI;
 using SpaceRaceG.DataProvider;
 
@@ -53,6 +54,8 @@ namespace SpaceRaceG
             if (Solver.Answer(board, out var response))
             {
                 DataLogger.Log(DataProvider.Name, DataProvider.StartTime, DateTime.Now, frame.FrameNumber, response);
+
+                Thread.Sleep(100);
                 DataProvider.SendResponse(response);
 
                 return;

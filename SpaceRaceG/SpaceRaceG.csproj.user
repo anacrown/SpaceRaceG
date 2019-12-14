@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>-file "D:\HACKATHON\SpaceRaceG\SpaceRaceG\App_Data\Logs\WEB [demo6%40codenjoy.com]"</StartArguments>
+    <StartArguments>-uri "http://192.168.1.150:8080/codenjoy-contest/board/plar/demo6%40codenjoy.com%3fcode=7881037345545140492&amp;gameName=codingbattle2019"</StartArguments>
   </PropertyGroup>
 </Project>
