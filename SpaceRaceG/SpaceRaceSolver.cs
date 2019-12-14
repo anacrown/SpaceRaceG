@@ -16,7 +16,17 @@ namespace SpaceRaceG
                 case ' ': return Element.NONE;
                 case 'x': return Element.EXPLOSION;
                 case '☼': return Element.WALL;
-                case 'A': return Element.HERO;
+                case '☺': return Element.HERO;
+
+                case 'V': return Element.HERO_down;
+                case '↙': return Element.HERO_down_left;
+                case '➘': return Element.HERO_down_right;
+                case '<': return Element.HERO_left;
+                case '>': return Element.HERO_right;
+                case 'A': return Element.HERO_up;
+                case '↖': return Element.HERO_up_left;
+                case '➚': return Element.HERO_up_right;
+
                 case '☻': return Element.OTHER_HERO;
                 case '+': return Element.DEAD_HERO;
                 case '$': return Element.GOLD;
@@ -30,29 +40,9 @@ namespace SpaceRaceG
 
         public bool Answer(Board board, out string response)
         {
-            response = string.Empty;
+            response = Direction.Left.GetCommand().ToString();
 
-            //var pack = board.SingleOrDefault(c => c.Element == Element.BULLET_PACK);
-            // var player = board.SingleOrDefault(c => c.Element == Element.HERO);
-            //
-            // if (player != null && pack != null)
-            // {
-            //     var bulletPackMap = new Map2(board).Check(player.P);
-            //     var path = bulletPackMap.Tracert(pack.P);
-            //
-            //     if (path.Length > 1)
-            //     {
-            //         var next = path.Skip(1).First();
-            //         var direction = player.P.GetDirectionTo(next);
-            //
-            //         var command = direction.GetCommand();
-            //
-            //         response = command.ToString();
-            //         return true;
-            //     }
-            // }
-
-            return false;
+            return true;
         }
     }
 }

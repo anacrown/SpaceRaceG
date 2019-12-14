@@ -36,10 +36,40 @@ namespace SpaceRaceG
             _graphicsDeviceManager = new WpfGraphicsDeviceService(this);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //bomb.png
+            //bullet.png
+            //bullet_pack.png
+            //dead_hero.png
+            //explosion.png
+            //gold.png
+            //hero.png
+            //hero_down.png
+            //hero_down_left.png
+            //hero_down_right.png
+            //hero_left.png
+            //hero_right.png
+            //hero_up.png
+            //hero_up_left.png
+            //hero_up_right.png
+            //none.png
+            //other_hero.png
+            //stone.png
+            //wall.png
+
             _textures.Add(Element.NONE, Content.Load<Texture2D>("none"));
             _textures.Add(Element.EXPLOSION, Content.Load<Texture2D>("explosion"));
             _textures.Add(Element.WALL, Content.Load<Texture2D>("wall"));
             _textures.Add(Element.HERO, Content.Load<Texture2D>("hero"));
+
+            _textures.Add(Element.HERO_down, Content.Load<Texture2D>("hero_down"));
+            _textures.Add(Element.HERO_down_left, Content.Load<Texture2D>("hero_down_left"));
+            _textures.Add(Element.HERO_down_right, Content.Load<Texture2D>("hero_down_right"));
+            _textures.Add(Element.HERO_left, Content.Load<Texture2D>("hero_left"));
+            _textures.Add(Element.HERO_right, Content.Load<Texture2D>("hero_right"));
+            _textures.Add(Element.HERO_up, Content.Load<Texture2D>("hero_up"));
+            _textures.Add(Element.HERO_up_left, Content.Load<Texture2D>("hero_up_left"));
+            _textures.Add(Element.HERO_up_right, Content.Load<Texture2D>("hero_up_right"));
+
             _textures.Add(Element.OTHER_HERO, Content.Load<Texture2D>("other_hero"));
             _textures.Add(Element.DEAD_HERO, Content.Load<Texture2D>("dead_hero"));
             _textures.Add(Element.GOLD, Content.Load<Texture2D>("gold"));

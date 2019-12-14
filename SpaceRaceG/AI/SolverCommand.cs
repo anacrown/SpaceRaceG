@@ -3,7 +3,11 @@
     public class SolverCommand
     {
         public static readonly SolverCommand Up = new SolverCommand("up");
+        public static readonly SolverCommand UpRight = new SolverCommand("up_right");
+        public static readonly SolverCommand UpLeft = new SolverCommand("up_left");
         public static readonly SolverCommand Down = new SolverCommand("down");
+        public static readonly SolverCommand DownRight = new SolverCommand("down_right");
+        public static readonly SolverCommand DownLeft = new SolverCommand("down_left");
         public static readonly SolverCommand Left = new SolverCommand("left");
         public static readonly SolverCommand Right = new SolverCommand("right");
         public static readonly SolverCommand Empty = new SolverCommand(string.Empty);

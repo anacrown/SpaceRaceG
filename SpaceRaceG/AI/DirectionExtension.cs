@@ -10,12 +10,23 @@ namespace SpaceRaceG.AI
             {
                 case Direction.Up:
                     return SolverCommand.Up;
+                case Direction.UpRight:
+                    return SolverCommand.UpRight;
+                case Direction.UpLeft:
+                    return SolverCommand.UpLeft;
+
                 case Direction.Right:
                     return SolverCommand.Right;
-                case Direction.Down:
-                    return SolverCommand.Down;
                 case Direction.Left:
                     return SolverCommand.Left;
+
+                case Direction.Down:
+                    return SolverCommand.Down;
+                case Direction.DownRight:
+                    return SolverCommand.DownRight;
+                case Direction.DownLeft:
+                    return SolverCommand.DownLeft;
+
                 case Direction.Unknown:
                     return SolverCommand.Empty;
                 default:
