@@ -10,7 +10,7 @@ namespace SpaceRaceG.DataProvider
     public class FileSystemDataLoggerSettings : ISerializable, INotifyPropertyChanged
     {
         public string MainLogDir { get; set; } = FileSystemConfigurator.MainLogDir;
-        public string DataFormat { get; set; } = "yyyy.MM.dd hh_mm_ss.FFF";
+        public string DataFormat { get; set; } = "yyyy.MM.dd hh.mm.ss";
 
         public FileSystemDataLoggerSettings() : base()
         {

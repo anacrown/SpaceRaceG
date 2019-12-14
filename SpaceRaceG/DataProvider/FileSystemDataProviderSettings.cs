@@ -10,7 +10,7 @@ namespace SpaceRaceG.DataProvider
     public class FileSystemDataProviderSettings : ISerializable, INotifyPropertyChanged
     {
         public string Path { get; }
-        public string DataFormat { get; set; } = "yyyy.MM.dd hh_mm_ss.FFF";
+        public string DataFormat { get; set; } = "yyyy.MM.dd hh.mm.ss";
 
         public FileSystemDataProviderSettings(string path)
         {

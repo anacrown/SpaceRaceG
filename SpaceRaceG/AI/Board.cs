@@ -11,6 +11,9 @@ namespace SpaceRaceG.AI
         private static readonly int PoolSize;
         private static readonly Board[] Boards;
 
+        public Point[] AttentionPoints { get; set; }
+        public Point[] PathPoints { get; set; }
+
         public DataFrame Frame { get; private set; }
 
         static Board()

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using SpaceRaceG.AI;
 
-//-file "C:\Users\misho\source\repos\SpaceRaceG\SpaceRaceG\App_Data\Logs\WEB [nais@mail.ru]"\
-//-uri "http://92.124.142.118:8080/another-context/board/player/nais@mail.ru?code=13476795611535248716"
-//-uri "http://192.168.1.150:8080/codenjoy-contest/board/player/demo6@codenjoy.com?code=7881037345545140492&gameName=codingbattle2019"
+//-uri ye"http://192.168.1.150:8080/codenjoy-contest/board/plar/demo6@codenjoy.com?code=7881037345545140492&gameName=codingbattle2019"
+//-file "D:\HACKATHON\SpaceRaceG\SpaceRaceG\App_Data\Logs\WEB [demo6@codenjoy.com]"
 
 namespace SpaceRaceG
 {
@@ -35,6 +34,8 @@ namespace SpaceRaceG
                 case '♣': return Element.BOMB;
                 case '0': return Element.STONE;
                 case '7': return Element.BULLET_PACK;
+
+                case 'n':
                 case '*': return Element.BULLET;
                 default: throw new Exception("Invalid Symbol in board");
             }
@@ -44,6 +45,7 @@ namespace SpaceRaceG
         {
             response = String.Empty;
             var player = board.SingleOrDefault(c => IsHero(c.Element));
+            board.AttentionPoints = getAttentionPoints(board).ToArray();
 
             if (player != null)
             {
@@ -51,12 +53,14 @@ namespace SpaceRaceG
                 var paths_to_pack = packs.Select(c =>
                 {
                     //TODO: CheckedPoints - опасные клетки
-                    var map = new Map2(board, getAttentionCells(board).Select(c2 => c2.P[Direction.Down]).Where(p => p.OnBoard(board.Size)).ToArray());
+                    var map = new Map2(board, board.AttentionPoints);
                     map.Check(c.P);
                     return (path: map.Tracert(player.P), target: c);
                 }).ToArray();
 
                 var path_short = paths_to_pack.MinSingle(p => p.path.Length);
+
+                board.PathPoints = path_short.path;
 
                 var next = (path_short.path.Length >= 2) ? path_short.path.Skip(1).First() : path_short.target.P;
                 var direction = player.P.GetDirectionTo(next);
@@ -80,25 +84,28 @@ namespace SpaceRaceG
                    element == Element.HERO_left;
         }
 
-        private IEnumerable<Cell> getAttentionCells(Board board)
+        private IEnumerable<Point> _getAttentionPoints(Board board)
         {
             foreach (var cell in board)
             {
                 if (cell.Element == Element.BULLET)
-                    yield return cell[Direction.Up];
+                    yield return cell.P[Direction.Up];
 
                 if (cell.Element == Element.STONE)
-                    yield return cell;
+                    yield return cell.P[Direction.Down];
 
                 if (cell.Element == Element.BOMB)
                 {
-                    yield return cell;
-                    foreach (var neighbor in cell.P.GetNeighbors(board.Size).Select(p => board[p]))
-                        yield return neighbor;
+                    yield return cell.P;
+                    foreach (var neighbor in cell.P.GetNeighbors(board.Size))
+                        yield return neighbor[Direction.Down];
                 }
             }
 
             yield break;
         }
+
+        private IEnumerable<Point> getAttentionPoints(Board board) =>
+            _getAttentionPoints(board).Where(p => p.OnBoard(board.Size));
     }
 }

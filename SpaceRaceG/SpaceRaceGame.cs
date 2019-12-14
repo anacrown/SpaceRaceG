@@ -109,6 +109,14 @@ namespace SpaceRaceG
 
             _spriteBatch.DrawString(_font, _board.Frame.FrameNumber.ToString(), _frameNumberPosition, Color.Black);
 
+            if (_board.AttentionPoints != null)
+            foreach (var attentionPoint in _board.AttentionPoints)
+                    _spriteBatch.DrawString(_font, "A", new Vector2(attentionPoint.X * _blockWidth, attentionPoint.Y * _blockHeight), Color.Red);
+
+            if (_board.PathPoints != null)
+                foreach (var attentionPoint in _board.PathPoints)
+                    _spriteBatch.DrawString(_font, "P", new Vector2(attentionPoint.X * _blockWidth + 3, attentionPoint.Y * _blockHeight), Color.Green);
+
             _spriteBatch.End();
         }
     }

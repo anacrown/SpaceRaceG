@@ -91,14 +91,14 @@ namespace SpaceRaceG.AI
 
         public static Dictionary<Direction, Point> Neighbors { get; set; } = new Dictionary<Direction, Point>()
         {
-            {Direction.Up, new Point(0, 1)},
-            {Direction.UpRight, new Point(1, 1)},
+            {Direction.Up, new Point(0, -1)},
+            {Direction.UpRight, new Point(1, -1)},
             {Direction.Right, new Point(1, 0)},
-            {Direction.DownRight, new Point(1, -1)},
-            {Direction.Down, new Point(0, -1)},
-            {Direction.DownLeft, new Point(-1, -1)},
+            {Direction.DownRight, new Point(1, 1)},
+            {Direction.Down, new Point(0, 1)},
+            {Direction.DownLeft, new Point(-1, 1)},
             {Direction.Left, new Point(-1, 0)},
-            {Direction.UpLeft, new Point(-1, 1)}
+            {Direction.UpLeft, new Point(-1, -1)}
         };
 
         public static Point operator +(Point p1, Point p2) => new Point(p1.X + p2.X, p1.Y + p2.Y);
